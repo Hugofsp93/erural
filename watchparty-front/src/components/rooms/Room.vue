@@ -18,6 +18,14 @@
           <button @click.prevent="editRoom(room)">Editar</button>
           <button @click.prevent="removeRoom(room)">Excluir</button>
         </div>
+        <form @submit.prevent="addVideo(room)">
+          <div>
+            <input class="input" v-model="newVideo.name" placeholder="Nome do vídeo" />
+            <input class="input" v-model="newVideo.url" placeholder="URL do vídeo" />
+            <input class="input" v-model="newVideo.description" placeholder="Descrição do vídeo" />
+            <input type="submit" value="Adicionar vídeo" />
+          </div>
+        </form>
         <div v-for="video in videos" :key="video.id">
           <div>{{ video.name }}</div>
           <div>{{ video.description }}</div>
@@ -53,7 +61,8 @@ export default {
       rooms: [],
       newRoom: [],
       error: '',
-      editedRoom: ''
+      editedRoom: '',
+      newVideo: {}
     }
   },
   created () {
@@ -95,6 +104,25 @@ export default {
       this.editedRoom = ''
       this.$httpSecured.patch(`/api/v1/rooms/${room.id}`, { room: { name: room.name, description: room.description, access_code: room.access_code } })
         .catch(error => this.setError(error, 'Não foi possível atualizar a informação da sala'))
+    },
+    addVideo (room) {
+      const value = this.newVideo
+      if (!value) {
+        return
+      }
+      this.$httpSecured.post(`/api/v1/rooms/${room.id}/add_video`, {
+        name: value.name,
+        url: value.url,
+        description: value.description
+      })
+        .then(response => {
+          // Atualize a lista de vídeos da sala
+          const video = response.data.video
+          room.videos.push(video)
+          // Limpe o formulário
+          this.newVideo = {}
+        })
+        .catch(error => this.setError(error, 'Não foi possível adicionar o vídeo à sala'))
     },
     getVideoId (url) {
       // Extrair o ID do vídeo a partir da URL do YouTube
