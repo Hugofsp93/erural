@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_14_231320) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_16_173338) do
   create_table "rooms", force: :cascade do |t|
     t.string "name", null: false
     t.string "description", null: false
@@ -19,6 +19,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_231320) do
     t.boolean "open", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "status"
     t.index ["user_id"], name: "index_rooms_on_user_id"
   end
 

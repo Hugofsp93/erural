@@ -18,6 +18,11 @@
           <button @click.prevent="editRoom(room)">Editar</button>
           <button @click.prevent="removeRoom(room)">Excluir</button>
         </div>
+        <div v-for="video in videos" :key="video.id">
+          <div>{{ video.name }}</div>
+          <div>{{ video.description }}</div>
+          <youtube :video-id="getVideoId(video.url)"></youtube>
+        </div>
         <div v-if="room == editedRoom">
           <form action="" @submit.prevent="updateRoom(room)">
             <div>
@@ -35,8 +40,14 @@
 
 <script>
 
+import Youtube from 'vue-youtube'
+
 export default {
   name: 'Rooms',
+  components: {
+    Youtube
+  },
+  props: ['videos'],
   data () {
     return {
       rooms: [],
@@ -84,6 +95,10 @@ export default {
       this.editedRoom = ''
       this.$httpSecured.patch(`/api/v1/rooms/${room.id}`, { room: { name: room.name, description: room.description, access_code: room.access_code } })
         .catch(error => this.setError(error, 'Não foi possível atualizar a informação da sala'))
+    },
+    getVideoId (url) {
+      // Extrair o ID do vídeo a partir da URL do YouTube
+      // Implemente a lógica aqui para extrair o ID do vídeo da URL
     }
   }
 }

@@ -40,6 +40,24 @@ module Api
       def destroy
         @room.destroy
       end
+
+      def add_video
+        @room = Room.find(params[:id])
+        video = Video.new(name: params[:name], url: params[:url], description: params[:description], room: @room)
+        
+        if video.save
+          render json: { video: video }, status: :created
+        else
+          render json: { errors: video.errors.full_messages }, status: :unprocessable_entity
+        end
+      end
+
+      def play_video
+        @room = Room.find(params[:id])
+        @room.update(open: false) # Atualiza o status da sala para indicar que um vídeo está sendo reproduzido
+
+        render json: { room: @room }
+      end
     
       private
         # Use callbacks to share common setup or constraints between actions.
