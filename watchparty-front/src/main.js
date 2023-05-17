@@ -6,7 +6,6 @@ import router from './router'
 import VueAxios from 'vue-axios'
 import axios from 'axios'
 import { securedAxiosInstance, plainAxiosInstance } from './backend/axios'
-// import './main.css'
 
 Vue.config.productionTip = false
 

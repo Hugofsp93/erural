@@ -1,12 +1,15 @@
 <template>
   <div id="app">
     <Header/>
-    <router-view/>
+    <div class="general">
+      <router-view/>
+    </div>
   </div>
 </template>
 
 <script>
 import Header from '@/components/Header.vue'
+import './main.css'
 
 export default {
   name: 'App',
@@ -15,3 +18,14 @@ export default {
   }
 }
 </script>
+
+<style>
+#app {
+  background-color: #ccd1cb;
+  height: 100vh;
+}
+
+.general {
+  padding: 1rem 2rem;
+}
+</style>
