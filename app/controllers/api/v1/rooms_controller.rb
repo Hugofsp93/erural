@@ -7,14 +7,12 @@ module Api
       # GET /rooms
       def index
         @rooms = current_user.rooms.all
-    
-        render json: @rooms
+        render json: @rooms.as_json
       end
     
       # GET /rooms/1
       def show
-        binding.pry
-        render json: @room
+        render json: @room.as_json
       end
     
       # POST /rooms
@@ -22,7 +20,7 @@ module Api
         @room = current_user.rooms.build(room_params)
         
         if @room.save
-          render json: @room, status: :created, location: api_v1_room_url(@room)
+          render json: @room.as_json, status: :created, location: api_v1_room_url(@room)
         else
           render json: @room.errors, status: :unprocessable_entity
         end
@@ -47,7 +45,7 @@ module Api
         video = Video.new(name: params[:name], url: params[:url], description: params[:description], room: @room)
         
         if video.save
-          render json: { video: video }, status: :created
+          render json: { video: video.as_json }, status: :created
         else
           render json: { errors: video.errors.full_messages }, status: :unprocessable_entity
         end
@@ -68,7 +66,8 @@ module Api
       end
 
       def access
-        room = Room.find(params[:id])
+        room = Room.find(params[:room_id])
+        
         if room.access_code == params[:access_code]
           render json: { success: true, message: 'Bem-vindo a sala' }
         else

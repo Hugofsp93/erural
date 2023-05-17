@@ -8,7 +8,7 @@ module Api
       # GET /videos
       def index
         @videos = Video.all
-        render json: @videos
+        render json: @videos.as_json
       end
     
       # GET /videos/1

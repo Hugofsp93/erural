@@ -17,7 +17,7 @@ export default new Router({
       component: Room
     },
     {
-      path: '/room/:id',
+      path: '/rooms/:id',
       name: 'RoomVideo',
       component: RoomVideo
     },

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div v-if="error">{{ error }}</div>
     <h3>Acessar Sala</h3>
     <form @submit.prevent="accessRoom">
       <div>
@@ -19,7 +20,8 @@ export default {
     return {
       roomId: this.$route.params.id,
       accessCode: '',
-      room: null
+      room: null,
+      error: ''
     }
   },
   methods: {
@@ -29,7 +31,11 @@ export default {
     accessRoom () {
       this.$httpSecured.get(`/api/v1/rooms/${this.roomId}/access/${this.accessCode}`)
         .then(response => {
-          this.$router.push(`/rooms/${this.roomId}`)
+          if (response.data.success === true) {
+            this.$router.push(`/rooms/${this.roomId}`)
+          } else {
+            this.setError(response, 'Código de acesso incorreto!')
+          }
         })
         .catch(error => this.setError(error, 'Não foi possível acessar a sala!'))
     }

@@ -160,10 +160,7 @@ export default {
         const updatedVideo = { id: value.id, name: value.name || '', url: value.url || '', description: value.description || '' }
         this.$httpSecured.put(`/api/v1/rooms/${room.id}/videos/${value.id}`, updatedVideo)
           .then(() => {
-            const videoIndex = room.videos.findIndex((video) => video.id === value.id)
-            if (videoIndex !== -1) {
-              room.videos[videoIndex] = updatedVideo
-            }
+            room.videos[0] = updatedVideo
             room.newVideo = {}
             this.loadVideos()
           }).catch(error => this.setError(error, 'Não foi possível atualizar as informações do vídeo')
