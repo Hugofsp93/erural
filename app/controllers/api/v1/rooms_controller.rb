@@ -13,6 +13,7 @@ module Api
     
       # GET /rooms/1
       def show
+        binding.pry
         render json: @room
       end
     
@@ -62,7 +63,7 @@ module Api
       def videos
         room = Room.find(params[:id])
         videos = room.videos
-
+        
         render json: videos
       end
 

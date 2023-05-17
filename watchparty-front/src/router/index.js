@@ -4,6 +4,7 @@ import Signin from '@/components/Signin.vue'
 import Signup from '@/components/Signup.vue'
 import Room from '@/components/rooms/Room.vue'
 import RoomAccess from '@/components/rooms/RoomAccess.vue'
+import RoomVideo from '@/components/rooms/RoomVideo.vue'
 
 Vue.use(Router)
 
@@ -14,6 +15,11 @@ export default new Router({
       path: '/rooms',
       name: 'Room',
       component: Room
+    },
+    {
+      path: '/room/:id',
+      name: 'RoomVideo',
+      component: RoomVideo
     },
     {
       path: '/rooms/:id/access/:accessCode',

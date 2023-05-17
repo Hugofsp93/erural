@@ -12,12 +12,14 @@
 </template>
 
 <script>
+
 export default {
   name: 'RoomAccess',
   data () {
     return {
       roomId: this.$route.params.id,
-      accessCode: ''
+      accessCode: '',
+      room: null
     }
   },
   methods: {
@@ -25,7 +27,7 @@ export default {
       this.error = (error.response && error.response.data && error.response.data.error) || text
     },
     accessRoom () {
-      this.$http.get(`/api/v1/rooms/${this.roomId}/access/${this.accessCode}`)
+      this.$httpSecured.get(`/api/v1/rooms/${this.roomId}/access/${this.accessCode}`)
         .then(response => {
           this.$router.push(`/rooms/${this.roomId}`)
         })

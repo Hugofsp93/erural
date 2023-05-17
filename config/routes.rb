@@ -6,7 +6,7 @@ Rails.application.routes.draw do
         post 'add_video', on: :member
         post 'play_video', on: :member
         get 'videos', on: :member
-        get '/rooms/:id/access/:access_code', to: 'rooms#access', as: 'room_access'
+        get '/access/:access_code', to: 'rooms#access', as: 'room_access'
         # get 'access/:access_key', to: 'rooms#access', on: :member
       end
     end

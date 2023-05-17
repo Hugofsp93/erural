@@ -8,7 +8,6 @@ module Api
       # GET /videos
       def index
         @videos = Video.all
-    
         render json: @videos
       end
     
@@ -55,7 +54,7 @@ module Api
         
         # Only allow a list of trusted parameters through.
         def video_params
-          params.require(:video).permit(:name, :url, :description, :room_id)
+          params.require(:video).permit(:id, :name, :url, :description, :room_id)
         end
     end
   end

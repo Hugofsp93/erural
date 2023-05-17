@@ -19,6 +19,7 @@
           <button @click.prevent="editRoom(room)">Editar</button>
           <button @click.prevent="removeRoom(room)">Excluir</button>
           <router-link :to="`/rooms/${room.id}/access/${room.access_code}`">Acessar sala</router-link>
+          <button @click.prevent="generateAccessLink(room)">Gerar Link de Acesso</button>
         </div>
         <div v-for="video in room.videos" :key="video.id">
           <div>{{ video.name }}</div>
@@ -27,6 +28,7 @@
         </div>
         <form @submit.prevent="handleVideo(room)">
           <div>
+            <input type="hidden" v-model="newVideo.id" />
             <input class="input" v-model="newVideo.name" placeholder="Nome do vídeo" />
             <input class="input" v-model="newVideo.url" placeholder="URL do vídeo" />
             <input class="input" v-model="newVideo.description" placeholder="Descrição do vídeo" />
@@ -113,11 +115,18 @@ export default {
         .catch(error => this.setError(error, 'Não é possível deletar a sala'))
     },
     editRoom (room) {
+      const video = room.videos[0]
+      if (video) {
+        this.newVideo.id = video.id
+      }
       this.editedRoom = room
     },
     updateRoom (room) {
       this.editedRoom = ''
       this.$httpSecured.patch(`/api/v1/rooms/${room.id}`, { room: { name: room.name, description: room.description } })
+        .then(() => {
+          this.loadVideos()
+        })
         .catch(error => this.setError(error, 'Não foi possível atualizar a informação da sala'))
     },
     loadVideos () {
@@ -125,6 +134,12 @@ export default {
         this.$httpSecured.get(`/api/v1/rooms/${room.id}/videos`)
           .then(response => {
             this.$set(room, 'videos', response.data)
+            console.log(room)
+            if (room.videos.length > 0) {
+              this.newVideo.name = room.videos[0].name
+              this.newVideo.url = room.videos[0].url
+              this.newVideo.description = room.videos[0].description
+            }
           })
           .catch(error => {
             console.error(`Erro ao encontrar o vídeo da sala ${room.id}:`, error)
@@ -137,7 +152,11 @@ export default {
         return
       }
 
-      if (value.name !== '') {
+      if (room.videos) {
+        value.id = room.videos[0].id
+      }
+
+      if (value.id) {
         const updatedVideo = { id: value.id, name: value.name || '', url: value.url || '', description: value.description || '' }
         this.$httpSecured.put(`/api/v1/rooms/${room.id}/videos/${value.id}`, updatedVideo)
           .then(() => {
@@ -146,6 +165,7 @@ export default {
               room.videos[videoIndex] = updatedVideo
             }
             room.newVideo = {}
+            this.loadVideos()
           }).catch(error => this.setError(error, 'Não foi possível atualizar as informações do vídeo')
           )
       } else {
@@ -158,6 +178,7 @@ export default {
             const video = response.data.video
             room.videos.push(video)
             room.newVideo = {}
+            this.loadVideos()
           }).catch(error => this.setError(error, 'Não foi possível adicionar o vídeo à sala'))
       }
     },
@@ -165,6 +186,10 @@ export default {
       const videoIdRegex = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]{11})/
       const match = url.match(videoIdRegex)
       return match ? match[1] : ''
+    },
+    generateAccessLink (room) {
+      const accessLink = `${window.location.origin}/rooms/${room.id}/access/${room.access_code}`
+      console.log(accessLink)
     }
   }
 }
