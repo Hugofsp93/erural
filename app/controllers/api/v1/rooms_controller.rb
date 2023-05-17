@@ -58,7 +58,26 @@ module Api
 
         render json: { room: @room }
       end
-    
+
+      def videos
+        room = Room.find(params[:id])
+        videos = room.videos
+
+        render json: videos
+      end
+
+      def access
+        room = Room.find(params[:id])
+        if room.access_code == params[:access_code]
+          render json: { success: true, message: 'Bem-vindo a sala' }
+        else
+          render json: { success: false, message: 'Código de acesso não é válido' }
+        end
+      rescue ActiveRecord::RecordNotFound
+        render json: { success: false, message: 'Sala não encontrada' }
+      end
+
+      
       private
         # Use callbacks to share common setup or constraints between actions.
         def set_room

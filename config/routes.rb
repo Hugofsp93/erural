@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
-      resources :videos
-      # resources :rooms, only: [:create, :destroy] do
       resources :rooms do
+        resources :videos
         post 'add_video', on: :member
         post 'play_video', on: :member
+        get 'videos', on: :member
+        get '/rooms/:id/access/:access_code', to: 'rooms#access', as: 'room_access'
+        # get 'access/:access_key', to: 'rooms#access', on: :member
       end
     end
   end
