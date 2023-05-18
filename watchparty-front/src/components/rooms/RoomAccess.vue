@@ -1,13 +1,13 @@
 <template>
   <div>
     <div v-if="error">{{ error }}</div>
-    <h3>Acessar Sala</h3>
+    <h3 class="title">Digite o código informado para entrar na sala</h3>
     <form @submit.prevent="accessRoom">
-      <div>
-        <input type="hidden" v-model="roomId" />
+      <input type="hidden" v-model="roomId" />
+      <div class="form-group">
         <input class="input" v-model="accessCode" placeholder="Código de Acesso" />
-        <input type="submit" value="Acessar" />
       </div>
+      <button type="submit" class="submit-button">Acessar</button>
     </form>
   </div>
 </template>
@@ -42,3 +42,38 @@ export default {
   }
 }
 </script>
+
+<style>
+.title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.error {
+  color: red;
+  margin-bottom: 10px;
+}
+
+.label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.input {
+  padding: 5px;
+  width: 100%;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  width: 30%;
+}
+
+.submit-button {
+  background-color: #1e6711;
+  color: #fff;
+  padding: 10px 20px;
+  margin: 14px 1px -5px 1px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+</style>

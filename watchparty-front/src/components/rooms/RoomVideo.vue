@@ -1,16 +1,19 @@
 <template>
   <div>
+    <router-link to="/rooms" class="back-button"> <- Voltar</router-link>
+    <div class="basic-infos">
+      <h3 class="title">WatchParty</h3>
+      <p class="label">Sala de {{ room.name_user }}</p>
+    </div>
     <div v-if="error">{{ error }}</div>
-    <h3>WatchParty</h3>
-    <div v-if="room">
-      <p>Description: {{ room.description }}</p>
-      <p>Name: {{ room.name }}</p>
-      <p>User ID: {{ room.name_user }}</p>
-      <div v-if="room.videos">
-        <p>Video Name: {{ room.videos.name }}</p>
-        <p>Video Description: {{ room.videos.description }}</p>
-        <youtube :video-id="getVideoId(room.videos.url)"></youtube>
-      </div>
+    <div class="infos" v-if="room">
+      <p class="title">{{ room.name }}</p>
+      <p class="label">{{ room.description }}</p>
+    </div>
+    <div class="info-video" v-if="room.videos">
+      <p class="label">{{ room.videos.name }}</p>
+      <p class="label">{{ room.videos.description }}</p>
+      <youtube :video-id="getVideoId(room.videos.url)" class="youtube-video"></youtube>
     </div>
   </div>
 </template>
@@ -52,3 +55,41 @@ export default {
   }
 }
 </script>
+
+<style>
+.basic-infos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.infos {
+  /* display: flex; */
+}
+
+.info-video {
+  /* display: flex; */
+}
+
+.label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: -10px;
+}
+
+.back-button {
+  position: absolute;
+  color: #1e6711;
+  text-decoration: none;
+  font-size: 16px;
+  margin: 3px;
+}
+
+.youtube-video {
+  /* Defina aqui os estilos adicionais para o componente do YouTube, se necessário */
+}
+</style>

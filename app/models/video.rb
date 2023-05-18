@@ -6,7 +6,8 @@ class Video < ApplicationRecord
       id: id,
       name: name,
       url: url,
-      description: description
+      description: description,
+      room_id: room_id
     }
   end
 end

@@ -37,7 +37,7 @@
             <input class="input" v-model="newVideo.name" placeholder="Nome do vídeo" />
             <input class="input" v-model="newVideo.url" placeholder="URL do vídeo" />
             <input class="input" v-model="newVideo.description" placeholder="Descrição do vídeo" />
-            <button type="submit" class="add-edit-button">Salvar</button>
+            <button type="submit" class="add-edit-button">Adicionar/Editar</button>
           </div>
         </form>
       </li>
@@ -144,21 +144,6 @@ export default {
           })
       })
     },
-    loadVideo (room) {
-      this.$httpSecured.get(`/api/v1/rooms/${room.id}/videos`)
-        .then(response => {
-          this.$set(room, 'videos', response.data)
-          console.log(room)
-          if (room.videos.length > 0) {
-            this.newVideo.name = room.videos[0].name
-            this.newVideo.url = room.videos[0].url
-            this.newVideo.description = room.videos[0].description
-          }
-        })
-        .catch(error => {
-          console.error(`Erro ao encontrar o vídeo da sala ${room.id}:`, error)
-        })
-    },
     handleVideo (room) {
       const value = { ...this.newVideo }
       if (!value.name || !value.url) {
@@ -175,7 +160,7 @@ export default {
           .then(() => {
             room.videos[0] = updatedVideo
             room.newVideo = {}
-            this.loadVideo(room)
+            this.loadVideos()
           }).catch(error => this.setError(error, 'Não foi possível atualizar as informações do vídeo')
           )
       } else {
