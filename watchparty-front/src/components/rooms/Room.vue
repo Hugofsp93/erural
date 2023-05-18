@@ -1,49 +1,45 @@
 <template>
   <div>
     <div v-if="error">{{ error }}</div>
-    <h3>Criar Sala</h3>
-    <form action="" @submit.prevent="addRoom">
-      <div>
-        <input class="input" autofocus autocomplete="off" placeholder="Crie um nome para sua sala"
-          v-model="newRoom.name" />
-        <input class="input" autofocus autocomplete="off" placeholder="Adicione uma descrição"
-          v-model="newRoom.description" />
+    <h3 class="title">Crie sua sala</h3>
+    <form action="" @submit.prevent="addRoom" class="form">
+      <div class="form-group">
+        <input class="input" autofocus autocomplete="off" placeholder="Crie um nome para sua sala" v-model="newRoom.name" />
+        <input class="input" autofocus autocomplete="off" placeholder="Adicione uma descrição" v-model="newRoom.description" />
       </div>
-      <input type="submit" value="Criar sala" />
+      <button type="submit" class="submit-button">Criar sala</button>
     </form>
 
-    <ul>
+    <ul style="margin-top: 50px;">
       <li v-for="room in rooms" :key="room.id" :room="room">
-      <div>
+        <div style="margin-bottom: 30px;">
           <p>{{ room.name }}</p>
-          <button @click.prevent="editRoom(room)">Editar</button>
-          <button @click.prevent="removeRoom(room)">Excluir</button>
-          <router-link :to="`/rooms/${room.id}/access/${room.access_code}`">Acessar sala</router-link>
-          <button @click.prevent="generateAccessLink(room)">Gerar Link de Acesso</button>
+          <div v-if="room == editedRoom">
+            <form action="" @submit.prevent="updateRoom(room)" class="form">
+              <div>
+                <input class="input" v-model="room.name" />
+                <input class="input" v-model="room.description" />
+                <button type="submit" class="add-edit-button">Atualizar</button>
+              </div>
+            </form>
+          </div>
+          <button class="submit-button" @click.prevent="editRoom(room)">Editar</button>
+          <button class="submit-button" @click.prevent="removeRoom(room)">Excluir</button>
+          <button class="submit-button" @click.prevent="generateAccessLink(room)">Gerar Link de Acesso</button>
+          <router-link class="access-button" :to="`/rooms/${room.id}/access/${room.access_code}`">Acessar sala</router-link>
         </div>
         <div v-for="video in room.videos" :key="video.id">
-          <div>{{ video.name }}</div>
-          <div>{{ video.description }}</div>
           <youtube :video-id="getVideoId(video.url)"></youtube>
         </div>
-        <form @submit.prevent="handleVideo(room)">
+        <form @submit.prevent="handleVideo(room)" class="form">
           <div>
             <input type="hidden" v-model="newVideo.id" />
             <input class="input" v-model="newVideo.name" placeholder="Nome do vídeo" />
             <input class="input" v-model="newVideo.url" placeholder="URL do vídeo" />
             <input class="input" v-model="newVideo.description" placeholder="Descrição do vídeo" />
-            <input type="submit" value="Adicionar/Editar" />
+            <button type="submit" class="add-edit-button">Adicionar/Editar</button>
           </div>
         </form>
-        <div v-if="room == editedRoom">
-          <form action="" @submit.prevent="updateRoom(room)">
-            <div>
-              <input class="input" v-model="room.name" />
-              <input class="input" v-model="room.description" />
-              <input type="submit" value="Atualizar">
-            </div>
-          </form>
-        </div>
       </li>
     </ul>
   </div>
@@ -68,7 +64,8 @@ export default {
       newRoom: {},
       error: '',
       editedRoom: '',
-      newVideo: {}
+      newVideo: {},
+      accessLink: ''
     }
   },
   created () {
@@ -191,3 +188,66 @@ export default {
   }
 }
 </script>
+
+<style>
+ul {
+  list-style: none
+}
+
+.form-group {
+  /* margin-top: 15px; */
+}
+
+.form {
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.input {
+  padding: 5px;
+  width: 27%;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+}
+
+.submit-button {
+  background-color: #1e6711;
+  color: #fff;
+  padding: 10px 20px;
+  margin: 14px 1px -5px 1px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.add-edit-button {
+  background-color: #1e6711;
+  color: #fff;
+  padding: 5px 15px;
+  margin: 14px 1px -5px 1px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.access-button {
+  background-color: #e26911;
+  text-decoration: none;
+  font-size: 14px;
+  color: #fff;
+  padding: 10px 20px;
+  margin: 14px 1px -5px 1px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+</style>
