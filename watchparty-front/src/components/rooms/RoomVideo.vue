@@ -90,6 +90,6 @@ export default {
 }
 
 .youtube-video {
-  /* Defina aqui os estilos adicionais para o componente do YouTube, se necessário */
+  text-align: center;
 }
 </style>
