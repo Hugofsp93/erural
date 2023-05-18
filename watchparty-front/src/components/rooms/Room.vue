@@ -25,8 +25,8 @@
           </div>
           <button class="submit-button" @click.prevent="editRoom(room)">Editar</button>
           <button class="submit-button" @click.prevent="removeRoom(room)">Excluir</button>
-          <button class="submit-button" @click.prevent="generateAccessLink(room)">Gerar Link de Acesso</button>
-          <router-link class="access-button" :to="`/rooms/${room.id}/access/${room.access_code}`">Acessar sala</router-link>
+          <button class="submit-button" @click.prevent="generateAccessLink(room)">Compartilhar</button>
+          <router-link class="access-button" :to="`/rooms/${room.id}/access`">Acessar sala</router-link>
         </div>
         <div v-for="video in room.videos" :key="video.id">
           <youtube :video-id="getVideoId(video.url)"></youtube>
@@ -182,15 +182,38 @@ export default {
       const match = url.match(videoIdRegex)
       return match ? match[1] : ''
     },
-    generateAccessLink (room) {
-      const accessLink = `${window.location.origin}/rooms/${room.id}/access/${room.access_code}`
-      console.log(accessLink)
+    generateAccessLink(room) {
+      const accessLink = `${window.location.origin}/rooms/${room.id}/access`;
+      const accessKey = room.access_key;
+      const message = `Acesse aqui: ${accessLink}\nCódigo de acesso: ${accessKey}`;
+
+      const notification = document.createElement('div');
+      notification.classList.add('notification');
+      notification.textContent = message;
+
+      document.body.appendChild(notification);
+
+      setTimeout(() => {
+        document.body.removeChild(notification);
+      }, 8000)
     }
   }
 }
 </script>
 
 <style>
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #268415;
+  color: #f8f8f8;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
 ul {
   list-style: none
 }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-link to="/rooms" class="back-button"> <- Voltar</router-link>
+    <router-link to="/rooms" class="back-button">Voltar</router-link>
     <div class="basic-infos">
       <h3 class="title">WatchParty</h3>
       <p class="label">Sala de {{ room.name_user }}</p>

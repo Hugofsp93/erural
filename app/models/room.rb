@@ -1,6 +1,7 @@
 class Room < ApplicationRecord
   belongs_to :user
   has_many :videos, dependent: :destroy
+  before_create :generate_access_code
   before_create :generate_access_key
 
   def as_json
@@ -11,6 +12,7 @@ class Room < ApplicationRecord
       user_id: user_id,
       name_user: User.find(user_id).email, # TODO: implementar nome do usuário, pra não exibir o email de quem convidou
       access_code: access_code,
+      access_key: access_key,
       open: self.open,
       videos: self.videos.first.as_json
     }
@@ -18,7 +20,11 @@ class Room < ApplicationRecord
 
   private
 
-  def generate_access_key
+  def generate_access_code
     self.access_code = SecureRandom.hex(6)
+  end
+
+  def generate_access_key
+    self.access_key = SecureRandom.hex(6)
   end
 end

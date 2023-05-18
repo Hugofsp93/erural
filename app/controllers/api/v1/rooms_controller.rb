@@ -68,7 +68,7 @@ module Api
       def access
         room = Room.find(params[:room_id])
         
-        if room.access_code == params[:access_code]
+        if room.access_key == params[:access_code]
           render json: { success: true, message: 'Bem-vindo a sala' }
         else
           render json: { success: false, message: 'Código de acesso não é válido' }

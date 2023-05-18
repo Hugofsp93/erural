@@ -22,9 +22,10 @@ export default new Router({
       component: RoomVideo
     },
     {
-      path: '/rooms/:id/access/:accessCode',
+      path: '/rooms/:id/access',
       name: 'RoomAccess',
-      component: RoomAccess
+      component: RoomAccess,
+      state: (route) => ({ accessCode: route.query.accessCode })
     },
     {
       path: '/',
