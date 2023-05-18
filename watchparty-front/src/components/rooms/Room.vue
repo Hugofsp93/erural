@@ -182,19 +182,19 @@ export default {
       const match = url.match(videoIdRegex)
       return match ? match[1] : ''
     },
-    generateAccessLink(room) {
-      const accessLink = `${window.location.origin}/rooms/${room.id}/access`;
-      const accessKey = room.access_key;
-      const message = `Acesse aqui: ${accessLink}\nCódigo de acesso: ${accessKey}`;
+    generateAccessLink (room) {
+      const accessLink = `${window.location.origin}/rooms/${room.id}/access`
+      const accessKey = room.access_key
+      const message = `Acesse aqui: ${accessLink}\nCódigo de acesso: ${accessKey}`
 
-      const notification = document.createElement('div');
-      notification.classList.add('notification');
-      notification.textContent = message;
+      const notification = document.createElement('div')
+      notification.classList.add('notification')
+      notification.textContent = message
 
-      document.body.appendChild(notification);
+      document.body.appendChild(notification)
 
       setTimeout(() => {
-        document.body.removeChild(notification);
+        document.body.removeChild(notification)
       }, 8000)
     }
   }
