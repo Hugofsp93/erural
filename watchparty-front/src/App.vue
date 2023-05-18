@@ -22,10 +22,10 @@ export default {
 <style>
 #app {
   background-color: #ccd1cb;
-  height: 100vh;
+  height: 200vh;
 }
 
 .general {
-  padding: 1rem 2rem;
+  padding: 3rem 2rem;
 }
 </style>
