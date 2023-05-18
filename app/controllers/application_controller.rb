@@ -9,6 +9,6 @@ class ApplicationController < ActionController::API
     end 
 
     def not_authorized
-      render json: { error: "Unauthorized" }, status: :unauthorized
+      render json: { error: "Usuário e/ou senha incorretos" }, status: :unauthorized
     end
 end
